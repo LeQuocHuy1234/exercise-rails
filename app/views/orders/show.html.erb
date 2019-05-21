@@ -1,0 +1,38 @@
+<%= render 'header'%>
+<div class="row">
+  <div class="col-12">
+    <p>Người mua: <%= @order[:user_name] %></p>
+    <p>Email: <%= @order[:user_email] %></p>
+    <p>Số điện thoại: <%= @order[:user_phone] %></p>
+    <p>Địa chỉ: <%= @order[:address] %></p>
+    <p>Tổng tiền: <%= @order[:amount] %></p>
+  </div>
+  <div class="col-12">
+    <h1 class="text-center">CHI TIẾT HÓA ĐƠN</h1>
+  </div>
+  <div class="col-12">
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <th scope="col">Tên</th>
+        <th scope="col">Số lương</th>
+        <th scope="col">Giá</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @order.order_details.each do |order_detail| %>
+        <tr>
+          <th scope="row">
+           <%= order_detail.product.name %>
+          </th>
+          <td><%= order_detail.qty %></td>
+          <td><%= order_detail.amount %></td>
+         </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+    <div class="col-12">
+     <%= link_to "Export file csv","export-csv/#{@order[:id]}.csv",:class => 'btn btn-success' %>
+    </div>
+</div>

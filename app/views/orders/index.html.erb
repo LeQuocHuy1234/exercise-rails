@@ -1,0 +1,65 @@
+<%= render 'header'%>
+<div class="row">
+  <div class="col-12">
+    <h1 class="text-center">DANH SÁCH HÓA ĐƠN</h1>
+  </div>
+  <div class="col-12">
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <th scope="col">Tên</th>
+        <th scope="col">Email</th>
+        <th scope="col">Số điện thoại</th>
+        <th scope="col">Địa chỉ</th>
+        <th scope="col">Trạng thái</th>
+        <th scope="col">Tổng tiền</th>
+        <th scope="col">Hành động</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @orders.each do |order| %>
+        <tr>
+          <th scope="row"><%= order.user_name %></th>
+          <td><%= order.user_email %></td>
+          <td><%= order.user_phone %></td>
+          <td><%= order.address %></td>
+          <td>
+            <select class="form-control select-status" idOrder="<%= order.id %>">
+              <option value="1" <%= 'selected' if order.status == 1%>>new</option>
+              <option value="2" <%= 'selected' if order.status == 2%>>paid</option>
+              <option value="3" <%= 'selected' if order.status == 3%>>delivered</option>
+              <option value="4" <%= 'selected' if order.status == 4%>>cancel</option>
+              <option value="5" <%= 'selected' if order.status == 5%>>closed</option>
+            </select>
+          </td>
+          <td><%= order.amount %></td>
+          <td>
+            <%= link_to "Chi tiết", order_path(order), method: :get,  :class => 'btn btn-success'%>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<script>
+    $( document ).ready(function() {
+      $('.select-status').on('change', function (e) {
+          var id = $(this).attr('idOrder');
+          var status = $(this).val();
+          $.ajax({
+              type: "POST",
+              url:"/orders/edit-status",
+              data: {
+                  id: id,
+                  status: status
+              },
+              headers: {
+                  'X-CSRF-Token': '<%= form_authenticity_token.to_s %>'
+              },
+              success: function (res) {
+              }
+          })
+      })
+    });
+</script>

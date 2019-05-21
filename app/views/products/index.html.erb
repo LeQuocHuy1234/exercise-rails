@@ -1,0 +1,45 @@
+<%= render 'header'%>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="text-center">DANH SÁCH SẢN PHẨM</h1>
+    </div>
+    <div class="col-12">
+      <table class="table table-bordered">
+        <thead>
+        <tr>
+          <th scope="col">Tên</th>
+          <th scope="col">Ảnh</th>
+          <th scope="col">Nội dung</th>
+          <th scope="col">Giá</th>
+          <th scope="col">Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+          <% @products.each do |product| %>
+            <tr>
+              <th scope="row"><%= product.name %></th>
+              <td><%= image_tag(product.image, size: "100x60") %></td>
+              <td><%= product.description %></td>
+              <td><%= product.price %></td>
+              <td>
+                <%= link_to "Sửa", edit_product_path(product), :class => 'btn btn-success'%>
+                <%= link_to "Xóa", product_path(product), method: :delete, data: { confirm: 'Bạn có chắc muốn xóa ?'}, :class => 'btn btn-danger'%>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <%= form_for (Product.new) do |f| %>
+        <div class="form-group">
+          <%= f.file_field :file_csv, class: 'form-control-file', required: true %>
+        </div>
+        <%= f.submit 'Upload CSV', :class => 'btn btn-sm btn-success' %>
+      <% end %>
+    </div>
+  </div>
+</div>
